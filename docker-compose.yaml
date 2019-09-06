@@ -1,0 +1,50 @@
+---
+version: "3.7"
+services:
+  myapache-frontend:
+    build:
+      context: ./frontend
+    image: vibhavsaluja2019/myapache-frontend:4.0
+    depends_on:
+      - myapache-backend
+    environment:
+      BACKENDLB: myapache-backend
+    ports:
+      - "9000:80"
+    volumes:
+      - type: volume
+        source: myapache-frontend-logvol
+        target: /var/log
+  myapache-frontend-logs:
+    build:
+      context: ./awslogs
+    image: vibhavsaluja2019/myapache-frontend-logs:4.0
+    depends_on:
+      - myapache-frontend
+    volumes:
+      - type: volume
+        source: myapache-frontend-logvol
+        target: /mnt/log
+        read_only: true
+  myapache-backend:
+    build:
+      context: ./backend
+    image: vibhavsaluja2019/myapache-backend:4.0
+    volumes:
+      - type: volume
+        source: myapache-backend-logvol
+        target: /var/log
+  myapache-backend-logs:
+    build:
+      context: ./awslogs
+    image: vibhavsaluja2019/myapache-backend-logs:4.0
+    depends_on:
+    - myapache-backend
+    volumes:
+      - type: volume
+        source: myapache-backend-logvol
+        target: /mnt/log
+        read_only: true
+volumes:
+  myapache-frontend-logvol:
+  myapache-backend-logvol:
