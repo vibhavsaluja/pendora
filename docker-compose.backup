@@ -15,6 +15,17 @@ services:
       - type: volume
         source: myapache-frontend-logvol
         target: /var/log
+  myapache-frontend-logs:
+    build:
+      context: ./awslogs
+    image: vibhavsaluja2019/myapache-frontend-logs:4.0
+    depends_on:
+      - myapache-frontend
+    volumes:
+      - type: volume
+        source: myapache-frontend-logvol
+        target: /mnt/log
+        read_only: true
   myapache-backend:
     build:
       context: ./backend
@@ -23,13 +34,17 @@ services:
       - type: volume
         source: myapache-backend-logvol
         target: /var/log
-  myapache-db:
-    image: mysql:5.7
+  myapache-backend-logs:
+    build:
+      context: ./awslogs
+    image: vibhavsaluja2019/myapache-backend-logs:4.0
+    depends_on:
+    - myapache-backend
     volumes:
       - type: volume
-        source: myapache-db-volume
-        target: /var/lib/mysql
+        source: myapache-backend-logvol
+        target: /mnt/log
+        read_only: true
 volumes:
   myapache-frontend-logvol:
   myapache-backend-logvol:
-  myapache-db-volume:

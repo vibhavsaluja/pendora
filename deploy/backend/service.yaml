@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: myapache-backendapi
+  namespace: myapache
+spec:
+  selector:
+    app: myapache
+    layer: backend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
