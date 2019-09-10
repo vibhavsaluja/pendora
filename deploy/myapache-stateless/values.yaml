@@ -1,0 +1,6 @@
+---
+nsname: myapache
+names:
+  msname: myapache
+  fename: frontend
+  bename: backend
